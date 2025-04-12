@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -44,5 +45,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function formations()
+    {
+        return $this->hasMany(Formation::class, 'formateur_id');
+    }
+
+    public function inscriptions()
+    {
+        return $this->belongsToMany(Formation::class, 'inscriptions');
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->role->name === $roleName;
     }
 }
